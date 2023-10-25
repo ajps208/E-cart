@@ -5,13 +5,19 @@ import Card from "react-bootstrap/Card";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { removeFromWishlist } from "../Redux/Slice/wishlist";
+import { addToCart } from "../Redux/Slice/cartSlice";
 
 function Wishlist() {
   const wishlistArray = useSelector((state) => state.wishlistReducer);
   const dispatch=useDispatch()
+  const handleWishlist=(products)=>{
+    dispatch(addToCart(products))
+    dispatch(removeFromWishlist(products.id))
+
+  }
 
   return (
-    <div style={{ marginTop: "100px" }}>
+    <div style={{ marginTop: "100px",overflowX:"hidden"  }}>
       <Row className="ms-5">
         {wishlistArray.length > 0 ? (
           wishlistArray.map((products, index) => (
@@ -35,7 +41,7 @@ function Wishlist() {
                     <Button className="btn btn-light" onClick={()=>dispatch(removeFromWishlist(products.id))}>
                       <i className="fa-solid fa-trash text-danger fa-2x"></i>
                     </Button>
-                    <Button className="btn btn-light">
+                    <Button className="btn btn-light" onClick={()=>handleWishlist(products)}>
                       <i className="fa-solid fa-cart-shopping fa-2x"></i>
                     </Button>
                   </div>
